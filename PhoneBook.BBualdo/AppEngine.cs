@@ -119,13 +119,14 @@ internal class AppEngine
   }
 
   #region Contact Methods
-  private void ShowContacts()
+  private bool ShowContacts()
   {
     List<Contact>? contacts = ContactsController.GetAllContacts();
 
-    if (contacts == null) return;
+    if (contacts == null) return false;
 
     ConsoleEngine.ShowContactsTable(contacts);
+    return true;
   }
 
   private void CreateContact()
@@ -155,48 +156,52 @@ internal class AppEngine
 
   private void UpdateContact()
   {
-    ShowContacts();
-    int contactId = UserInput.GetId("contact");
-    if (contactId == 0) return;
-
-    Contact? contact = ContactsController.GetContactById(contactId);
-    if (contact == null) return;
-
-    string name = UserInput.GetContactName(contact.Name);
-    if (name == "0") return;
-    string? email = UserInput.GetEmail(name);
-    if (email == "0") return;
-    string phoneNumber = UserInput.GetPhoneNumber(name);
-    if (phoneNumber == "0") return;
-
-    List<Group>? groups = GroupsController.GetGroups();
-    int? groupId = null;
-
-    if (groups != null)
+    if (ShowContacts())
     {
-      ConsoleEngine.ShowGroupsTable(groups);
-      groupId = UserInput.OptionallyGetGroupId();
-      if (groupId == 0) return;
-      if (groupId == null) groupId = contact.GroupId;
+      int contactId = UserInput.GetId("contact");
+      if (contactId == 0) return;
+
+      Contact? contact = ContactsController.GetContactById(contactId);
+      if (contact == null) return;
+
+      string name = UserInput.GetContactName(contact.Name);
+      if (name == "0") return;
+      string? email = UserInput.GetEmail(name);
+      if (email == "0") return;
+      string phoneNumber = UserInput.GetPhoneNumber(name);
+      if (phoneNumber == "0") return;
+
+      List<Group>? groups = GroupsController.GetGroups();
+      int? groupId = null;
+
+      if (groups != null)
+      {
+        ConsoleEngine.ShowGroupsTable(groups);
+        groupId = UserInput.OptionallyGetGroupId();
+        if (groupId == 0) return;
+        if (groupId == null) groupId = contact.GroupId;
+      }
+
+      contact.Name = name;
+      contact.Email = email;
+      contact.PhoneNumber = phoneNumber;
+      contact.GroupId = groupId;
+
+      ContactsController.UpdateContact(contact);
     }
-
-    contact.Name = name;
-    contact.Email = email;
-    contact.PhoneNumber = phoneNumber;
-    contact.GroupId = groupId;
-
-    ContactsController.UpdateContact(contact);
   }
 
   private void DeleteContact()
   {
-    ShowContacts();
-    int contactId = UserInput.GetId("contact");
-    if (contactId == 0) return;
-    Contact? contact = ContactsController.GetContactById(contactId);
-    if (contact == null) return;
+    if (ShowContacts())
+    {
+      int contactId = UserInput.GetId("contact");
+      if (contactId == 0) return;
+      Contact? contact = ContactsController.GetContactById(contactId);
+      if (contact == null) return;
 
-    ContactsController.DeleteContact(contact);
+      ContactsController.DeleteContact(contact);
+    }
   }
   #endregion
 
@@ -204,28 +209,32 @@ internal class AppEngine
 
   private void DeleteGroup()
   {
-    ShowGroups();
-    int groupId = UserInput.GetId("group");
-    if (groupId == 0) return;
-    Group? group = GroupsController.GetGroupById(groupId);
-    if (group == null) return;
+    if (ShowGroups())
+    {
+      int groupId = UserInput.GetId("group");
+      if (groupId == 0) return;
+      Group? group = GroupsController.GetGroupById(groupId);
+      if (group == null) return;
 
-    GroupsController.DeleteGroup(group);
+      GroupsController.DeleteGroup(group);
+    }
   }
 
   private void UpdateGroup()
   {
-    ShowGroups();
-    int groupId = UserInput.GetId("group");
-    if (groupId == 0) return;
-    Group? group = GroupsController.GetGroupById(groupId);
-    if (group == null) return;
+    if (ShowGroups())
+    {
+      int groupId = UserInput.GetId("group");
+      if (groupId == 0) return;
+      Group? group = GroupsController.GetGroupById(groupId);
+      if (group == null) return;
 
-    string newName = UserInput.GetGroupName(group.Name);
-    if (newName == "0") return;
-    group.Name = newName;
+      string newName = UserInput.GetGroupName(group.Name);
+      if (newName == "0") return;
+      group.Name = newName;
 
-    GroupsController.UpdateGroup(group);
+      GroupsController.UpdateGroup(group);
+    }
   }
 
   private void CreateGroup()
@@ -236,13 +245,14 @@ internal class AppEngine
     GroupsController.InsertGroup(groupName);
   }
 
-  private void ShowGroups()
+  private bool ShowGroups()
   {
     List<Group>? groups = GroupsController.GetGroups();
 
-    if (groups == null) return;
+    if (groups == null) return false;
 
     ConsoleEngine.ShowGroupsTable(groups);
+    return true;
   }
   #endregion
 
