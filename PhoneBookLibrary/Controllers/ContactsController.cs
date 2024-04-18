@@ -32,7 +32,7 @@ public static class ContactsController
   public static Contact? GetContactById(int contactId)
   {
     using PhoneBookContext db = new();
-    Contact? contact = db.Contacts.FirstOrDefault(contact => contact.ContactId == contactId);
+    Contact? contact = db.Contacts.Include(contact => contact.Group).FirstOrDefault(contact => contact.ContactId == contactId);
 
     if (contact == null)
     {

@@ -20,7 +20,7 @@ public static class GroupsController
   {
     using PhoneBookContext db = new();
 
-    Group? group = db.Groups.FirstOrDefault(group => group.GroupId == groupId);
+    Group? group = db.Groups.Include(group => group.Contacts).FirstOrDefault(group => group.GroupId == groupId);
 
     if (group == null)
     {
