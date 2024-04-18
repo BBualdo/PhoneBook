@@ -93,15 +93,32 @@ internal class AppEngine
         return;
       case "Show Groups":
         ShowGroups();
+        PressAnyKey();
         break;
       case "Create Group":
         CreateGroup();
+        PressAnyKey();
         break;
       case "Update Group":
+        UpdateGroup();
+        PressAnyKey();
         break;
       case "Delete Group":
         break;
     }
+  }
+
+  private void UpdateGroup()
+  {
+    ShowGroups();
+    int groupId = UserInput.GetGroupId();
+    Group? group = GroupsController.GetGroupById(groupId);
+    if (group == null) return;
+
+    string newName = UserInput.GetGroupName(group.Name);
+    group.Name = newName;
+
+    GroupsController.UpdateGroup(group);
   }
 
   private void CreateGroup()
@@ -109,19 +126,15 @@ internal class AppEngine
     string groupName = UserInput.GetGroupName();
 
     GroupsController.InsertGroup(groupName);
-
-    PressAnyKey();
   }
 
   private void ShowGroups()
   {
     List<Group>? groups = GroupsController.GetGroups();
 
-    if (groups == null) { PressAnyKey(); return; }
+    if (groups == null) return;
 
     ConsoleEngine.ShowGroupsTable(groups);
-
-    PressAnyKey();
   }
 
   private void PressAnyKey()

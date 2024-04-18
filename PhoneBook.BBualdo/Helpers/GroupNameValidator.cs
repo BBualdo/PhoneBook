@@ -2,7 +2,7 @@
 
 namespace PhoneBook.BBualdo.Helpers;
 
-public class GroupNameValidator
+public static class GroupNameValidator
 {
   public static bool IsValid(string groupName)
   {
