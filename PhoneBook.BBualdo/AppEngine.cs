@@ -113,8 +113,9 @@ internal class AppEngine
   private void DeleteGroup()
   {
     ShowGroups();
-    int groupId = UserInput.GetGroupId();
-    Group? group = GroupsController.GetGroupById(groupId);
+    int? groupId = UserInput.GetGroupId();
+    if (groupId == null) return;
+    Group? group = GroupsController.GetGroupById((int)groupId);
     if (group == null) return;
 
     GroupsController.DeleteGroup(group);
@@ -123,11 +124,13 @@ internal class AppEngine
   private void UpdateGroup()
   {
     ShowGroups();
-    int groupId = UserInput.GetGroupId();
-    Group? group = GroupsController.GetGroupById(groupId);
+    int? groupId = UserInput.GetGroupId();
+    if (groupId == null) return;
+    Group? group = GroupsController.GetGroupById((int)groupId);
     if (group == null) return;
 
-    string newName = UserInput.GetGroupName(group.Name);
+    string? newName = UserInput.GetGroupName(group.Name);
+    if (newName == null) return;
     group.Name = newName;
 
     GroupsController.UpdateGroup(group);
@@ -135,7 +138,8 @@ internal class AppEngine
 
   private void CreateGroup()
   {
-    string groupName = UserInput.GetGroupName();
+    string? groupName = UserInput.GetGroupName();
+    if (groupName == null) return;
 
     GroupsController.InsertGroup(groupName);
   }
