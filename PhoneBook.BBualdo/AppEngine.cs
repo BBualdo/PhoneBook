@@ -1,4 +1,6 @@
 ﻿using PhoneBookLibrary;
+using PhoneBookLibrary.Controllers;
+using PhoneBookLibrary.Models;
 using Spectre.Console;
 
 namespace PhoneBook.BBualdo;
@@ -90,6 +92,7 @@ internal class AppEngine
       case "Back":
         return;
       case "Show Groups":
+        ShowGroups();
         break;
       case "Create Group":
         break;
@@ -98,5 +101,22 @@ internal class AppEngine
       case "Delete Group":
         break;
     }
+  }
+
+  private void ShowGroups()
+  {
+    List<Group>? groups = GroupsController.GetGroups();
+
+    if (groups == null) { PressAnyKey(); return; }
+
+    ConsoleEngine.ShowGroupsTable(groups);
+
+    PressAnyKey();
+  }
+
+  private void PressAnyKey()
+  {
+    AnsiConsole.Markup("\n[cyan1]Press any key to continue.[/]");
+    Console.ReadKey();
   }
 }

@@ -7,7 +7,7 @@ namespace PhoneBookLibrary.Models;
 public class Group
 {
   [Key]
-  public int Id { get; set; }
+  public int GroupId { get; set; }
 
   [Required]
   public string Name { get; set; }

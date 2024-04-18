@@ -11,7 +11,7 @@ using PhoneBookLibrary;
 namespace PhoneBookLibrary.Migrations
 {
     [DbContext(typeof(PhoneBookContext))]
-    [Migration("20240418103957_Initial")]
+    [Migration("20240418114546_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -26,11 +26,11 @@ namespace PhoneBookLibrary.Migrations
 
             modelBuilder.Entity("PhoneBookLibrary.Models.Contact", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ContactId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContactId"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -41,32 +41,54 @@ namespace PhoneBookLibrary.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ContactId");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("PhoneBookLibrary.Models.Group", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("GroupId");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("PhoneBookLibrary.Models.Contact", b =>
+                {
+                    b.HasOne("PhoneBookLibrary.Models.Group", "Group")
+                        .WithMany("Contacts")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("PhoneBookLibrary.Models.Group", b =>
+                {
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

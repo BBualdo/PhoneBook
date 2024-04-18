@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using PhoneBookLibrary.Models;
+using Spectre.Console;
 
 namespace PhoneBookLibrary;
 
@@ -15,6 +16,26 @@ public static class ConsoleEngine
     string choice = AnsiConsole.Prompt(prompt);
 
     return choice;
+  }
+
+  public static void ShowGroupsTable(List<Group> groups)
+  {
+    Table table = new Table().Title("Contact Groups");
+    table.AddColumn(new TableColumn("[mediumorchid1]ID[/]"));
+    table.AddColumn(new TableColumn("[mediumorchid1]Name[/]"));
+    table.AddColumn(new TableColumn("[mediumorchid1]Contacts[/]"));
+
+    foreach (Group group in groups)
+    {
+      table.AddRow(group.GroupId.ToString(), group.Name);
+
+      foreach (Contact contact in group.Contacts)
+      {
+        table.AddRow(contact.Name);
+      }
+    }
+
+    AnsiConsole.Write(table);
   }
 
   public static void ShowTitle()
