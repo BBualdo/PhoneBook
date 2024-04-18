@@ -33,6 +33,23 @@ public static class ConsoleEngine
     AnsiConsole.Write(table);
   }
 
+  public static void ShowContactsTable(List<Contact> contacts)
+  {
+    Table table = new Table().Title("Contacts");
+    table.AddColumn(new TableColumn("[mediumorchid1]ID[/]"));
+    table.AddColumn(new TableColumn("[mediumorchid1]Name[/]"));
+    table.AddColumn(new TableColumn("[mediumorchid1]Email[/]"));
+    table.AddColumn(new TableColumn("[mediumorchid1]Phone Number[/]"));
+    table.AddColumn(new TableColumn("[mediumorchid1]Group[/]"));
+
+    foreach (Contact contact in contacts)
+    {
+      table.AddRow(contact.ContactId.ToString(), contact.Name, contact.Email ?? "", contact.PhoneNumber, contact.Group.Name ?? "");
+    }
+
+    AnsiConsole.Write(table);
+  }
+
   public static void ShowTitle()
   {
     Rule rule = new Rule("Phone Book").RoundedBorder().Centered();

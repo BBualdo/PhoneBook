@@ -3,7 +3,7 @@ using Spectre.Console;
 
 namespace PhoneBookLibrary.Controllers;
 
-public class GroupsController
+public static class GroupsController
 {
   public static void DeleteGroup(Group group)
   {

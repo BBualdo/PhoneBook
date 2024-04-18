@@ -62,12 +62,20 @@ internal class AppEngine
       case "Back":
         return;
       case "Show Contacts":
+        ShowContacts();
+        PressAnyKey();
         break;
       case "Create Contact":
+        CreateContact();
+        PressAnyKey();
         break;
       case "Update Contact":
+        UpdateContact();
+        PressAnyKey();
         break;
       case "Delete Contact":
+        DeleteContact();
+        PressAnyKey();
         break;
     }
   }
@@ -109,6 +117,28 @@ internal class AppEngine
         break;
     }
   }
+
+  #region Contact Methods
+  private void ShowContacts()
+  {
+    List<Contact>? contacts = ContactsController.GetAllContacts();
+
+    if (contacts == null) return;
+
+    ConsoleEngine.ShowContactsTable(contacts);
+  }
+
+  private void CreateContact()
+  {
+
+  }
+
+  private void UpdateContact()
+  {
+  }
+
+  private void DeleteContact() { }
+  #endregion
 
   #region Group Methods
 
