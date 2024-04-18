@@ -1,4 +1,5 @@
-﻿using PhoneBookLibrary.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneBookLibrary.Models;
 using Spectre.Console;
 
 namespace PhoneBookLibrary.Controllers;
@@ -9,7 +10,7 @@ public static class ContactsController
   {
     using PhoneBookContext db = new();
 
-    if (db.Contacts.ToList().Count == 0)
+    if (db.Contacts.Include(contact => contact.Group).ToList().Count == 0)
     {
       AnsiConsole.Markup("[red]Contacts list is empty.[/] Create one first. ");
       return null;
