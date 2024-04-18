@@ -188,7 +188,16 @@ internal class AppEngine
     ContactsController.UpdateContact(contact);
   }
 
-  private void DeleteContact() { }
+  private void DeleteContact()
+  {
+    ShowContacts();
+    int contactId = UserInput.GetId("contact");
+    if (contactId == 0) return;
+    Contact? contact = ContactsController.GetContactById(contactId);
+    if (contact == null) return;
+
+    ContactsController.DeleteContact(contact);
+  }
   #endregion
 
   #region Group Methods

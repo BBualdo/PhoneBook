@@ -6,6 +6,16 @@ namespace PhoneBookLibrary.Controllers;
 
 public static class ContactsController
 {
+  public static void DeleteContact(Contact contact)
+  {
+    using PhoneBookContext db = new();
+    db.Remove(contact);
+    int stateChanges = db.SaveChanges();
+
+    if (stateChanges == 0) AnsiConsole.Markup("[red]Contact deleting failed. [/]");
+    else AnsiConsole.Markup("[green]Contact deleted! [/]");
+  }
+
   public static List<Contact>? GetAllContacts()
   {
     using PhoneBookContext db = new();
