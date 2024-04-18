@@ -46,19 +46,29 @@ public class UserInput
 
   public static int? OptionallyGetGroupId()
   {
-    int? groupId = AnsiConsole.Prompt(
-      new TextPrompt<int>("[mediumorchid1]Enter ID of group you want to place your contact in[/], leave blank if you don't want to add it to any or type 0 to go back: ")
+    string? groupId = AnsiConsole.Prompt(
+      new TextPrompt<string?>("[mediumorchid1]Enter ID of group you want to place your contact in[/], leave blank if you don't want to add it to any or type 0 to go back: ")
       .AllowEmpty());
 
-    if (groupId == 0) return 0;
+    if (groupId == "0") return 0;
+    if (string.IsNullOrEmpty(groupId)) return null;
 
-    return groupId;
+    while (!OptionalIdValidator.IsValid(groupId))
+    {
+      groupId = AnsiConsole.Prompt(
+        new TextPrompt<string>("[yellow]Try again: [/]")
+        .AllowEmpty());
+      if (groupId == "0") return 0;
+      if (string.IsNullOrEmpty(groupId)) return null;
+    }
+
+    return Convert.ToInt32(groupId);
   }
 
   public static string? GetEmail(string name)
   {
     string? email = AnsiConsole.Prompt(
-      new TextPrompt<string>($"[mediumorchid1]Enter new email for [cyan1]{name}[/][/], leave empty or type 0 to go back: ")
+      new TextPrompt<string?>($"[mediumorchid1]Enter new email for [cyan1]{name}[/][/], leave empty or type 0 to go back: ")
       .AllowEmpty());
 
     if (email == "0") return "0";
