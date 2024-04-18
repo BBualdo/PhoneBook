@@ -130,7 +130,27 @@ internal class AppEngine
 
   private void CreateContact()
   {
+    string name = UserInput.GetContactName();
+    if (name == "0") return;
+    string? email = UserInput.GetEmail(name);
+    if (email == "0") return;
 
+    string phoneNumber = UserInput.GetPhoneNumber(name);
+    if (phoneNumber == "0") return;
+
+    List<Group>? groups = GroupsController.GetGroups();
+    int? groupId = null;
+
+    if (groups != null)
+    {
+      ConsoleEngine.ShowGroupsTable(groups);
+      groupId = UserInput.OptionallyGetGroupId();
+      if (groupId == 0) return;
+    }
+
+    Contact contact = new() { Name = name, Email = email, PhoneNumber = phoneNumber, GroupId = groupId };
+
+    ContactsController.InsertContact(contact);
   }
 
   private void UpdateContact()
@@ -145,9 +165,9 @@ internal class AppEngine
   private void DeleteGroup()
   {
     ShowGroups();
-    int? groupId = UserInput.GetGroupId();
-    if (groupId == null) return;
-    Group? group = GroupsController.GetGroupById((int)groupId);
+    int groupId = UserInput.GetGroupId();
+    if (groupId == 0) return;
+    Group? group = GroupsController.GetGroupById(groupId);
     if (group == null) return;
 
     GroupsController.DeleteGroup(group);
@@ -156,13 +176,13 @@ internal class AppEngine
   private void UpdateGroup()
   {
     ShowGroups();
-    int? groupId = UserInput.GetGroupId();
-    if (groupId == null) return;
-    Group? group = GroupsController.GetGroupById((int)groupId);
+    int groupId = UserInput.GetGroupId();
+    if (groupId == 0) return;
+    Group? group = GroupsController.GetGroupById(groupId);
     if (group == null) return;
 
-    string? newName = UserInput.GetGroupName(group.Name);
-    if (newName == null) return;
+    string newName = UserInput.GetGroupName(group.Name);
+    if (newName == "0") return;
     group.Name = newName;
 
     GroupsController.UpdateGroup(group);
@@ -170,8 +190,8 @@ internal class AppEngine
 
   private void CreateGroup()
   {
-    string? groupName = UserInput.GetGroupName();
-    if (groupName == null) return;
+    string groupName = UserInput.GetGroupName();
+    if (groupName == "0") return;
 
     GroupsController.InsertGroup(groupName);
   }

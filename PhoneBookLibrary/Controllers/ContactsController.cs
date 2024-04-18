@@ -7,7 +7,7 @@ public static class ContactsController
 {
   public static List<Contact>? GetAllContacts()
   {
-    using PhoneBookContext db = new PhoneBookContext();
+    using PhoneBookContext db = new();
 
     if (db.Contacts.ToList().Count == 0)
     {
@@ -16,5 +16,16 @@ public static class ContactsController
     }
 
     return [.. db.Contacts];
+  }
+
+  public static void InsertContact(Contact contact)
+  {
+    using PhoneBookContext db = new();
+
+    db.Add(contact);
+    int stateChanges = db.SaveChanges();
+
+    if (stateChanges == 0) AnsiConsole.Markup("[red]Contact adding failed. [/]");
+    else AnsiConsole.Markup("[green]Contact added! [/]");
   }
 }

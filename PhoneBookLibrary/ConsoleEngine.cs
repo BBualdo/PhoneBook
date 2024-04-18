@@ -44,7 +44,7 @@ public static class ConsoleEngine
 
     foreach (Contact contact in contacts)
     {
-      table.AddRow(contact.ContactId.ToString(), contact.Name, contact.Email ?? "", contact.PhoneNumber, contact.Group.Name ?? "");
+      table.AddRow(contact.ContactId.ToString(), contact.Name, contact.Email ?? "", contact.PhoneNumber, contact.Group?.Name ?? "");
     }
 
     AnsiConsole.Write(table);
