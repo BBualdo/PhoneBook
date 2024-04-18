@@ -35,9 +35,9 @@ public class UserInput
     return contactName;
   }
 
-  public static int GetGroupId()
+  public static int GetId(string nameOfEntity)
   {
-    int groupId = AnsiConsole.Ask<int>("[mediumorchid1]Enter ID of group you want to interact with[/] or type 0 to go back:");
+    int groupId = AnsiConsole.Ask<int>($"[mediumorchid1]Enter ID of {nameOfEntity.ToLower()} you want to interact with[/] or type 0 to go back:");
 
     if (groupId == 0) return 0;
 

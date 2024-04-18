@@ -19,6 +19,20 @@ public static class ContactsController
     return [.. db.Contacts];
   }
 
+  public static Contact? GetContactById(int contactId)
+  {
+    using PhoneBookContext db = new();
+    Contact? contact = db.Contacts.FirstOrDefault(contact => contact.ContactId == contactId);
+
+    if (contact == null)
+    {
+      AnsiConsole.Markup("[red]Contact with given ID doesn't exists. [/]\n");
+      return null;
+    }
+
+    return contact;
+  }
+
   public static void InsertContact(Contact contact)
   {
     using PhoneBookContext db = new();
@@ -28,5 +42,16 @@ public static class ContactsController
 
     if (stateChanges == 0) AnsiConsole.Markup("[red]Contact adding failed. [/]");
     else AnsiConsole.Markup("[green]Contact added! [/]");
+  }
+
+  public static void UpdateContact(Contact contact)
+  {
+    using PhoneBookContext db = new();
+
+    db.Update(contact);
+    int stateChanges = db.SaveChanges();
+
+    if (stateChanges == 0) AnsiConsole.Markup("[red]Contact updating failed. [/]");
+    else AnsiConsole.Markup("[green]Contact updated! [/]");
   }
 }
