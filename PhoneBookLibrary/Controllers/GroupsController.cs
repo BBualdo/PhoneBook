@@ -5,6 +5,16 @@ namespace PhoneBookLibrary.Controllers;
 
 public class GroupsController
 {
+  public static void DeleteGroup(Group group)
+  {
+    using PhoneBookContext db = new();
+    db.Remove(group);
+    int stateChanges = db.SaveChanges();
+
+    if (stateChanges == 0) AnsiConsole.Markup("[red]Group deleting failed. [/]");
+    else AnsiConsole.Markup("[green]Group deleted! [/]");
+  }
+
   public static Group? GetGroupById(int groupId)
   {
     using PhoneBookContext db = new();

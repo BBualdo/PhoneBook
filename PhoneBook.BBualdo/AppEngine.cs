@@ -104,8 +104,20 @@ internal class AppEngine
         PressAnyKey();
         break;
       case "Delete Group":
+        DeleteGroup();
+        PressAnyKey();
         break;
     }
+  }
+
+  private void DeleteGroup()
+  {
+    ShowGroups();
+    int groupId = UserInput.GetGroupId();
+    Group? group = GroupsController.GetGroupById(groupId);
+    if (group == null) return;
+
+    GroupsController.DeleteGroup(group);
   }
 
   private void UpdateGroup()
