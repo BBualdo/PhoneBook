@@ -11,7 +11,7 @@ using PhoneBookLibrary;
 namespace PhoneBookLibrary.Migrations
 {
     [DbContext(typeof(PhoneBookContext))]
-    [Migration("20240418114546_Initial")]
+    [Migration("20240418121815_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -66,11 +66,11 @@ namespace PhoneBookLibrary.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GroupId");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Groups");
                 });

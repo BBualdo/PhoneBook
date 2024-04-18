@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PhoneBookLibrary.Models;
 
-[Index(nameof(Name))]
+[Index(nameof(GroupId))]
 public class Group
 {
   [Key]

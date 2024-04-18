@@ -95,12 +95,22 @@ internal class AppEngine
         ShowGroups();
         break;
       case "Create Group":
+        CreateGroup();
         break;
       case "Update Group":
         break;
       case "Delete Group":
         break;
     }
+  }
+
+  private void CreateGroup()
+  {
+    string groupName = UserInput.GetGroupName();
+
+    GroupsController.InsertGroup(groupName);
+
+    PressAnyKey();
   }
 
   private void ShowGroups()

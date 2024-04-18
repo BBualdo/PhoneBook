@@ -7,7 +7,7 @@ public class GroupsController
 {
   public static List<Group>? GetGroups()
   {
-    using PhoneBookContext db = new PhoneBookContext();
+    using PhoneBookContext db = new();
 
     if (db.Groups.ToList().Count == 0)
     {
@@ -16,5 +16,17 @@ public class GroupsController
     }
 
     return [.. db.Groups];
+  }
+
+  public static void InsertGroup(string groupName)
+  {
+    Group group = new() { Name = groupName };
+
+    using PhoneBookContext db = new();
+    db.Add(group);
+    int stateChanges = db.SaveChanges();
+
+    if (stateChanges == 0) AnsiConsole.Markup("[red]Group adding failed. [/]");
+    else AnsiConsole.Markup("[green]Group added! [/]");
   }
 }

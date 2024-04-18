@@ -27,12 +27,7 @@ public static class ConsoleEngine
 
     foreach (Group group in groups)
     {
-      table.AddRow(group.GroupId.ToString(), group.Name);
-
-      foreach (Contact contact in group.Contacts)
-      {
-        table.AddRow(contact.Name);
-      }
+      table.AddRow(group.GroupId.ToString(), group.Name, GetContactsAsString(group.Contacts));
     }
 
     AnsiConsole.Write(table);
@@ -44,5 +39,15 @@ public static class ConsoleEngine
     rule.Style = new Style(Color.MediumOrchid1);
 
     AnsiConsole.Write(rule);
+  }
+
+  private static string GetContactsAsString(List<Contact> contacts)
+  {
+    if (contacts == null || contacts.Count == 0)
+    {
+      return "[red]No contacts[/]";
+    }
+
+    return string.Join("\n", contacts.Select(contact => contact.Name));
   }
 }

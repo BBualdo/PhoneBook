@@ -63,11 +63,11 @@ namespace PhoneBookLibrary.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GroupId");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Groups");
                 });
