@@ -110,6 +110,8 @@ internal class AppEngine
     }
   }
 
+  #region Group Methods
+
   private void DeleteGroup()
   {
     ShowGroups();
@@ -152,6 +154,7 @@ internal class AppEngine
 
     ConsoleEngine.ShowGroupsTable(groups);
   }
+  #endregion
 
   private void PressAnyKey()
   {
