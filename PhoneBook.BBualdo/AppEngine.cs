@@ -1,6 +1,5 @@
-﻿using PhoneBookLibrary;
-using PhoneBookLibrary.Controllers;
-using PhoneBookLibrary.Models;
+﻿using PhoneBook.BBualdo.Services;
+using PhoneBookLibrary;
 using Spectre.Console;
 
 namespace PhoneBook.BBualdo;
@@ -62,19 +61,19 @@ internal class AppEngine
       case "Back":
         return;
       case "Show Contacts":
-        ShowContacts();
+        ContactsService.ShowContacts();
         PressAnyKey();
         break;
       case "Create Contact":
-        CreateContact();
+        ContactsService.CreateContact();
         PressAnyKey();
         break;
       case "Update Contact":
-        UpdateContact();
+        ContactsService.UpdateContact();
         PressAnyKey();
         break;
       case "Delete Contact":
-        DeleteContact();
+        ContactsService.DeleteContact();
         PressAnyKey();
         break;
     }
@@ -100,161 +99,23 @@ internal class AppEngine
       case "Back":
         return;
       case "Show Groups":
-        ShowGroups();
+        GroupsService.ShowGroups();
         PressAnyKey();
         break;
       case "Create Group":
-        CreateGroup();
+        GroupsService.CreateGroup();
         PressAnyKey();
         break;
       case "Update Group":
-        UpdateGroup();
+        GroupsService.UpdateGroup();
         PressAnyKey();
         break;
       case "Delete Group":
-        DeleteGroup();
+        GroupsService.DeleteGroup();
         PressAnyKey();
         break;
     }
   }
-
-  #region Contact Methods
-  private bool ShowContacts()
-  {
-    List<Contact>? contacts = ContactsController.GetAllContacts();
-
-    if (contacts == null) return false;
-
-    ConsoleEngine.ShowContactsTable(contacts);
-    return true;
-  }
-
-  private void CreateContact()
-  {
-    string name = UserInput.GetContactName();
-    if (name == "0") return;
-    string? email = UserInput.GetEmail(name);
-    if (email == "0") return;
-
-    string phoneNumber = UserInput.GetPhoneNumber(name);
-    if (phoneNumber == "0") return;
-
-    List<Group>? groups = GroupsController.GetGroups();
-    int? groupId = null;
-
-    if (groups != null)
-    {
-      ConsoleEngine.ShowGroupsTable(groups);
-      groupId = UserInput.OptionallyGetGroupId();
-      if (groupId == 0) return;
-    }
-
-    Contact contact = new() { Name = name, Email = email, PhoneNumber = phoneNumber, GroupId = groupId };
-
-    ContactsController.InsertContact(contact);
-  }
-
-  private void UpdateContact()
-  {
-    if (ShowContacts())
-    {
-      int contactId = UserInput.GetId("contact");
-      if (contactId == 0) return;
-
-      Contact? contact = ContactsController.GetContactById(contactId);
-      if (contact == null) return;
-
-      string name = UserInput.GetContactName(contact.Name);
-      if (name == "0") return;
-      string? email = UserInput.GetEmail(name);
-      if (email == "0") return;
-      string phoneNumber = UserInput.GetPhoneNumber(name);
-      if (phoneNumber == "0") return;
-
-      List<Group>? groups = GroupsController.GetGroups();
-      int? groupId = null;
-
-      if (groups != null)
-      {
-        ConsoleEngine.ShowGroupsTable(groups);
-        groupId = UserInput.OptionallyGetGroupId();
-        if (groupId == 0) return;
-        if (groupId == null) groupId = contact.GroupId;
-      }
-
-      contact.Name = name;
-      contact.Email = email;
-      contact.PhoneNumber = phoneNumber;
-      contact.GroupId = groupId;
-
-      ContactsController.UpdateContact(contact);
-    }
-  }
-
-  private void DeleteContact()
-  {
-    if (ShowContacts())
-    {
-      int contactId = UserInput.GetId("contact");
-      if (contactId == 0) return;
-      Contact? contact = ContactsController.GetContactById(contactId);
-      if (contact == null) return;
-
-      ContactsController.DeleteContact(contact);
-    }
-  }
-  #endregion
-
-  #region Group Methods
-
-  private void DeleteGroup()
-  {
-    if (ShowGroups())
-    {
-      int groupId = UserInput.GetId("group");
-      if (groupId == 0) return;
-      Group? group = GroupsController.GetGroupById(groupId);
-      if (group == null) return;
-
-      GroupsController.DeleteGroup(group);
-    }
-  }
-
-  private void UpdateGroup()
-  {
-    if (ShowGroups())
-    {
-      int groupId = UserInput.GetId("group");
-      if (groupId == 0) return;
-      Group? group = GroupsController.GetGroupById(groupId);
-      if (group == null) return;
-
-      string newName = UserInput.GetGroupName(group.Name);
-      if (newName == "0") return;
-      group.Name = newName;
-
-      GroupsController.UpdateGroup(group);
-    }
-  }
-
-  private void CreateGroup()
-  {
-    string groupName = UserInput.GetGroupName();
-    if (groupName == "0") return;
-
-    GroupsController.InsertGroup(groupName);
-  }
-
-  private bool ShowGroups()
-  {
-    List<Group>? groups = GroupsController.GetGroups();
-
-    if (groups == null) return false;
-
-    ConsoleEngine.ShowGroupsTable(groups);
-    return true;
-  }
-  #endregion
 
   private void PressAnyKey()
   {
