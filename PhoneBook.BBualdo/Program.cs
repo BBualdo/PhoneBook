@@ -1,2 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using PhoneBook.BBualdo;
+
+AppEngine app = new AppEngine();
+
+while (app.IsRunning)
+{
+  app.MainMenu();
+}
